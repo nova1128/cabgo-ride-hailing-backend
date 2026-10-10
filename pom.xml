@@ -23,7 +23,7 @@
     <name>cab-booking-system</name>
 
     <properties>
-        <java.version>26</java.version>
+        <java.version>21</java.version>
     </properties>
 
     <modules>
