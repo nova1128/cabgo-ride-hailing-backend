@@ -1,0 +1,8 @@
+package com.example.cab.exception;
+
+/** Thrown by services; GlobalExceptionHandler turns it into the matching HTTP error response. */
+public class BadRequestException extends RuntimeException {
+    public BadRequestException(String message) {
+        super(message);
+    }
+}

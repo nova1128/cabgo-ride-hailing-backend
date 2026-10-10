@@ -1,0 +1,8 @@
+# COPY this file to "application-local.properties" (same folder) and fill in your Neon values.
+# The real file is git-ignored so your password is never pushed to GitHub.
+#
+# Neon console -> your project -> Connect -> turn connection pooling OFF -> copy host, database, user, password.
+# The URL must start with "jdbc:postgresql://".
+spring.datasource.url=jdbc:postgresql://YOUR-HOST.neon.tech/neondb?sslmode=require
+spring.datasource.username=YOUR_USER
+spring.datasource.password=YOUR_PASSWORD

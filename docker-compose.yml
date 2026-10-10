@@ -1,0 +1,91 @@
+# ONE command starts all the free infrastructure:      docker compose up -d
+# Then run the two Spring Boot apps from IntelliJ (they connect to localhost).
+#
+# OPTIONAL: run the apps in Docker too (needs a .env file, see .env.example):
+#   docker compose --profile apps up -d --build
+#
+# Stop everything:  docker compose down        (add -v to also delete stored data)
+
+services:
+
+  # Redis: in-memory store. We use it for the driver geo-index and the surge-pricing counters.
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  # Kafka (single node, KRaft mode = no ZooKeeper needed). Carries the "trip-events" topic.
+  kafka:
+    image: apache/kafka:3.9.0
+    ports:
+      - "9092:9092"          # for apps running on your machine (IntelliJ)
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,DOCKER://:29092,CONTROLLER://:9093
+      # Two ways in: localhost:9092 from your machine, kafka:29092 from other containers.
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,DOCKER://kafka:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,DOCKER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+
+  # Prometheus: collects metrics from the app every 5 seconds.  http://localhost:9090
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # lets the container reach the app running on your machine
+
+  # Grafana: dashboards on top of Prometheus.  http://localhost:3000  (login admin / admin)
+  grafana:
+    image: grafana/grafana:11.3.0
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
+
+  # ------------------------------------------------------------------ the apps (only with --profile apps)
+  cab-app:
+    profiles: ["apps"]
+    build:
+      context: .
+      dockerfile: cab-app/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:-}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-}
+      JWT_SECRET: ${JWT_SECRET:-docker-dev-secret-key-change-me-32bytes-min!!}
+      REDIS_HOST: redis
+      KAFKA_BOOTSTRAP: kafka:29092
+    depends_on:
+      - redis
+      - kafka
+
+  notification-service:
+    profiles: ["apps"]
+    build:
+      context: .
+      dockerfile: notification-service/Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      KAFKA_BOOTSTRAP: kafka:29092
+    depends_on:
+      - kafka

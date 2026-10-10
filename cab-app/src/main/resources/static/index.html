@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CabGo - cab booking demo</title>
+  <!-- Leaflet = free open-source map library. Map tiles come from OpenStreetMap (free, needs internet). -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">&#128661; CabGo <span class="tag">demo</span></div>
+    <div id="user-badge" class="user-badge" hidden>
+      <span id="user-text"></span>
+      <button id="btn-logout" class="btn small ghost" type="button">Log out</button>
+    </div>
+  </header>
+
+  <!-- ===================== LOGIN / REGISTER SCREEN ===================== -->
+  <main id="auth-view" class="auth-view">
+    <section class="card auth-card">
+      <div class="tabs">
+        <button id="tab-login" class="tab active" type="button">Log in</button>
+        <button id="tab-register" class="tab" type="button">Register</button>
+      </div>
+
+      <form id="login-form" autocomplete="off">
+        <label>Phone (10 digits)<input id="login-phone" inputmode="numeric" maxlength="10" required></label>
+        <label>Password<input id="login-password" type="password" required></label>
+        <button class="btn primary" type="submit">Log in</button>
+      </form>
+
+      <form id="register-form" autocomplete="off" hidden>
+        <label>Name<input id="reg-name" required></label>
+        <label>Phone (10 digits)<input id="reg-phone" inputmode="numeric" maxlength="10" required></label>
+        <label>Password (min 8 characters)<input id="reg-password" type="password" minlength="8" required></label>
+        <label>I am a
+          <select id="reg-role">
+            <option value="RIDER">Rider (I want rides)</option>
+            <option value="DRIVER">Driver (I give rides)</option>
+          </select>
+        </label>
+        <label id="reg-vehicle-wrap" hidden>Vehicle number<input id="reg-vehicle" placeholder="UP85AB1234"></label>
+        <button class="btn primary" type="submit">Create account</button>
+      </form>
+
+      <p id="auth-error" class="error" role="alert"></p>
+    </section>
+
+    <section class="card dev-card">
+      <h3>Developer tools</h3>
+      <p class="hint">Want to try a ride quickly? Create 5 demo drivers around the map centre. They are set
+        <b>online</b> automatically. Then register as a rider and request a ride.
+        To act as one of the drivers, log in with a phone below (password <code>password123</code>).</p>
+      <button id="btn-seed" class="btn" type="button">Seed 5 demo drivers</button>
+      <ul id="demo-drivers" class="demo-list"></ul>
+    </section>
+  </main>
+
+  <!-- ===================== MAIN APP SCREEN ===================== -->
+  <main id="app-view" class="app-view" hidden>
+    <aside id="sidebar" class="sidebar"></aside>
+    <div id="map"></div>
+  </main>
+
+  <div id="toasts" class="toasts"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="/assets/app.js"></script>
+</body>
+</html>

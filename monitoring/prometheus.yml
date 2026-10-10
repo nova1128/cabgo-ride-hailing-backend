@@ -1,0 +1,11 @@
+# Prometheus pulls ("scrapes") metrics from the app every 5 seconds.
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: cab-app
+    metrics_path: /actuator/prometheus
+    static_configs:
+      # First target = app running in IntelliJ on your machine, second = app running in Docker.
+      # Whichever one is not running simply shows as "down"; that is fine.
+      - targets: ['host.docker.internal:8080', 'cab-app:8080']

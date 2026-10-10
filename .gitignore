@@ -1,0 +1,11 @@
+# build output
+target/
+# IDE
+.idea/
+*.iml
+.vscode/
+# SECRETS - never commit these
+.env
+cab-app/src/main/resources/application-local.properties
+# OS
+.DS_Store
