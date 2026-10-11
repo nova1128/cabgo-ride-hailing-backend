@@ -1,15 +1,11 @@
-# CI = Continuous Integration. On every push GitHub (free) builds the project and runs ALL tests, including the
-# Testcontainers integration test (the runner has Docker). A green tick on the repo shows the code builds and passes.
 name: CI
 
 on:
   push:
     branches: [main]
   pull_request:
-jobs:
-  name: Show Spring Boot autoconfigure version (diagnostic)
-  run: mvn -B -pl cab-app dependency:tree -Dincludes=org.springframework.boot:spring-boot-autoconfigure
 
+jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
@@ -20,6 +16,9 @@ jobs:
           distribution: temurin
           java-version: '21'
           cache: maven
+
+      - name: Show Spring Boot autoconfigure version (diagnostic)
+        run: mvn -B -pl cab-app dependency:tree -Dincludes=org.springframework.boot:spring-boot-autoconfigure
 
       - name: Build and test
         run: mvn -B verify
