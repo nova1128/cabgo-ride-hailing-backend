@@ -24,7 +24,20 @@
 
     <properties>
         <java.version>21</java.version>
+        <!-- Must equal the version in the <parent> block above -->
+        <spring-boot.release>3.5.16</spring-boot.release>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Safety net: never let a Spring Boot 4 jar into this Boot 3.5 project -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-autoconfigure</artifactId>
+                <version>${spring-boot.release}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <modules>
         <module>cab-app</module>
