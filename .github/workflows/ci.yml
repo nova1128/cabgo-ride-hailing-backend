@@ -18,7 +18,7 @@ jobs:
           cache: maven
 
       - name: Show Spring Boot autoconfigure version (diagnostic)
-        run: mvn -B -pl cab-app dependency:tree -Dincludes=org.springframework.boot:spring-boot-autoconfigure
+        run: mvn -B -pl cab-app dependency:tree -Dverbose -Dincludes=org.springframework.boot:spring-boot-autoconfigure
 
       - name: Build and test
         run: mvn -B verify
