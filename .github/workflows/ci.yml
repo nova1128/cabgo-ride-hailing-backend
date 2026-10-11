@@ -6,9 +6,9 @@ on:
   push:
     branches: [main]
   pull_request:
-    - name: Show Spring Boot autoconfigure version (diagnostic)
-      run: mvn -B -pl cab-app dependency:tree -Dincludes=org.springframework.boot:spring-boot-autoconfigure
 jobs:
+  name: Show Spring Boot autoconfigure version (diagnostic)
+  run: mvn -B -pl cab-app dependency:tree -Dincludes=org.springframework.boot:spring-boot-autoconfigure
 
   build-and-test:
     runs-on: ubuntu-latest
