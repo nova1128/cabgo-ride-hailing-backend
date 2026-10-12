@@ -31,7 +31,9 @@ const JSON_HEADERS = { 'Content-Type': 'application/json' };
 const tripsAssigned = new Counter('trips_assigned');
 const tripsNoDriver = new Counter('trips_no_driver');
 
+
 export const options = {
+  setupTimeout: '15m',
   scenarios: {
     driver_pings: {
       executor: 'constant-vus', vus: Math.min(DRIVERS, 30), duration: DURATION, exec: 'pingLocation',

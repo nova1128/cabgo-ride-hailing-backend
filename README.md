@@ -7,8 +7,7 @@ concurrency control, event-driven architecture, caching, resilience and observab
 driver, watch the trip move through its states, pay (idempotently), and rate the driver. A separate notification service
 reacts to Kafka events, and Grafana shows live metrics.
 
-> **Live demo:** _add your Render URL here after deploying_ (free tier: the first load after idle takes a few minutes).
-> CI: GitHub Actions runs all tests, including Testcontainers integration tests, on every push.
+> **Live demo:** _https://cabgo-ride-hailing-backend.onrender.com
 
 ## Architecture
 
