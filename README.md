@@ -61,7 +61,7 @@ notification-service/               separate Kafka-consuming service
 ```
 Flow of every request: **controller -> service -> repository -> model**.
 
-## Tech stack (all free)
+## Tech stack 
 Java 21, Spring Boot 3.5 (Web, Data JPA, Security + OAuth2 resource server, Validation, Actuator), PostgreSQL (Neon free tier),
 Redis, Apache Kafka (KRaft), Resilience4j, Micrometer + Prometheus + Grafana, JUnit 5 + Testcontainers, k6, Docker Compose,
 Leaflet + OpenStreetMap for the UI.
