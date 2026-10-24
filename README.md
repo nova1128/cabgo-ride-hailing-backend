@@ -115,7 +115,7 @@ docker run --rm -i -e BASE_URL=http://host.docker.internal:8080 grafana/k6 run -
 ```
 (PowerShell: `Get-Content loadtest/matching.js | docker run --rm -i -e BASE_URL=http://host.docker.internal:8080 grafana/k6 run -`)
 
-| Strategy | Drivers | Trip-create p95 | Avg matching time | Notes |
+| Strategy | Drivers | Avg matching time | Notes |
 |---|---------|-----------------|-------------------|---|
 | sql (full scan) | 100     | 65.7 ms         | 2.81 s            | |
 | redis (geo-index) | 100     | 32.6 ms         | 3.33 s            | |
