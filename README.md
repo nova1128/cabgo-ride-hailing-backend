@@ -115,10 +115,10 @@ docker run --rm -i -e BASE_URL=http://host.docker.internal:8080 grafana/k6 run -
 ```
 (PowerShell: `Get-Content loadtest/matching.js | docker run --rm -i -e BASE_URL=http://host.docker.internal:8080 grafana/k6 run -`)
 
-| Strategy | Drivers | Trip-create p95 | Avg matching time | Trip-create p95 |
-|---|---------|-----------------|-------------------|-----------------|
-| sql (full scan) | 100     | 65.7 ms         | 2.81 s            | 97.5%           |
-| redis (geo-index) | 100     | 32.6 ms         | 3.33 s            | 97.7%           |
+| Strategy | Drivers | Trip-create p95 | Avg matching time | Notes |
+|---|---------|-----------------|-------------------|---|
+| sql (full scan) | 100     | 65.7 ms         | 2.81 s            | |
+| redis (geo-index) | 100     | 32.6 ms         | 3.33 s            | |
 
 ### Resilience demo (great to show in an interview)
 While the app is running: `docker stop <redis-container>` then request rides. Matching keeps working through the
